@@ -14,8 +14,8 @@ app.post('/api/nightout', async (req, res) =>
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'pgdacnoidamarch24@gmail.com',       // Replace with your email
-      pass: 'pgdac@123'           // Use App Password if using Gmail
+      user: ' ',       // Replace with your email
+      pass: '   '           // Use App Password if using Gmail
     }
   });
     const message = `
@@ -31,7 +31,7 @@ app.post('/api/nightout', async (req, res) =>
 
   try {
     await transporter.sendMail({
-      from: 'pgdacnoidamarch24@gmail.com',
+      from: ' ',
       to: [facultyEmail, parentEmail],
       subject: 'Night-Out Request Submitted',
       text: message
