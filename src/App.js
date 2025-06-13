@@ -5,6 +5,7 @@ import {BrowserRouter as Router,Routes,Link,Route}from 'react-router-dom';
 import StudentForm from './StudentForm'
 import SearchStudent from './SearchStudent'
 import DeleteStudent from './DeleteStudent'
+import Login from './Login';
 
 
 //install npm install react-router-dom
@@ -18,13 +19,15 @@ export default function App() {
            <li> <Link to="/register">Register Student</Link></li>
             <li><Link to="/search">  Search Student</Link></li>
              <li><Link to="/delete">  Delete Student</Link></li>
-            
+            <li><Link to="login">Login student </Link></li>
            
         </ul>
         </nav>
 
 <Routes>
   <Route path="/register" element={<StudentForm/>}  /> 
+ <Route path="/login" element={<Login/>} />
+ 
   <Route path="/search"   element={<SearchStudent/>}/>
   <Route path="/delete"   element={<DeleteStudent/>}/>
 </Routes>

@@ -25,8 +25,8 @@ app.post('/api/nightout', async (req, res) =>
     Course: ${course}
     Batch: ${batch}
     Date: ${date}
-    Time Out: ${timeOut}
-    Time In: ${timeIn}
+    TimeOut: ${timeOut}
+    TimeIn: ${timeIn}
   `;
 
   try {

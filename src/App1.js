@@ -7,6 +7,7 @@ function App1() {
   const[form,setForm]=useState({
 
  prn:'',
+ passsword:'',
  name:'',
  course:'',
  batch:'',

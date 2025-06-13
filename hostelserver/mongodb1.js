@@ -5,9 +5,39 @@ const Student = require('./student');  // Import the Student model
 const app = express();
 app.use(cors());
 app.use(express.json());  // Middleware to parse JSON request body
+const bcrypt = require('bcrypt');
+
+app.post('/login', async (req, res) => 
+{
+  const { prn, password } = req.body;
+
+  console.log("Login attempt with PRN:", prn, "and password:", password);
+  
+   try {
+    // Find the student by PRN (don't fetch the password directly)
+    const student = await Student.findOne({ prn });
+    
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+     // Compare the entered password with the stored hashed password
+    const isPasswordMatch = await bcrypt.compare(password, student.password);
+
+    if (isPasswordMatch) {
+      console.log("Login successful for student:", prn);
+      return res.json({ message: 'Login successful!' });
+    } else {
+      console.log("Incorrect password");
+      return res.status(401).json({ message: 'Incorrect password' });
+    }
+}
+catch(err){
+  console.error("error during login");
+}}
+);
 
 // Connect to MongoDB
-   mongoose.connect('mongodb://127.0.0.1:27017/etutor1')
+   mongoose.connect('mongodb://127.0.0.1:27017/hostel')
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log("Error connecting to MongoDB:", err));
 
@@ -73,16 +103,31 @@ app.get('/students/:prn', async (req, res) => {
 app.post('/students', async (req, res) => 
 {
   try {
-    console.log("dattttttta="+ req.body);  
-    const student = new Student(req.body);  // Accepts the entire JSON object
+
+   const { password,...studentData } = req.body;  // Extract the password and other student data
+   
+    // Hash the password before saving
+    const saltRounds = 10;  // You can adjust the salt rounds
+    //10 is optimum for bcrypt
+     
+     const hashedPassword = await bcrypt.hash(password, saltRounds);
+   
+     // Create a new student object with the hashed password
+     const student = new Student({
+      ...studentData,   
+         password: hashedPassword,  // Store the hashed password
+    });
+
+    console.log("Saving student:", student);
     await student.save();
     res.status(201).json(student);
   } 
   catch (err) 
   {   console.log(err);
-    res.status(500).json({ message: "Error saving student", error: err });
+      res.status(500).json({ message: "Error saving student", error: err });
   }
 });
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

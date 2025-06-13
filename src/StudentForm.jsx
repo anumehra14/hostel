@@ -7,6 +7,7 @@ const StudentForm = () =>
     const [formData, setFormData] = useState({
     prn: '',
     name: '',
+    password: '',
     course: '',
     batch: '',
     dateout: '',
